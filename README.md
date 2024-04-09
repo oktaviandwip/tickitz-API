@@ -41,14 +41,14 @@ npm start
 -   [![Express.js][Express.js]][Express-url]
 -   [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
 
-<hr>
-<p align="center">
-Developed with ❤️ in Indonesia 	🇮🇩
-</p>
-
 [Node.js]: https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white
 [Node-url]: https://nodejs.org/en
 [Express.js]: https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB
 [Express-url]: https://expressjs.com/
 [Postgresql]: https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white
 [Postgresql-url]: https://www.postgresql.org/
+
+<hr>
+<p align="center">
+Developed with ❤️ in Indonesia 	🇮🇩
+</p>
