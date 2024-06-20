@@ -1,41 +1,45 @@
-const controllers = {};
 const models = require("../models/users");
 const bcrypt = require("bcrypt");
-const response = require("../utils/response");
 const jwt = require("jsonwebtoken");
+const response = require("../utils/response");
 
-const genToken = (role, user_id) => {
+const genToken = (role, id) => {
   const payload = {
     role,
-    user_id,
+    id,
   };
 
-  const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: "24h" });
+  const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: "14d" });
   return token;
 };
 
-controllers.login = async (req, res) => {
-  try {
-    const rows = await models.getPassword(req.body.email);
-    if (rows.length === 0) {
-      return response(res, 401, "Email is not registered!");
-    }
+const controller = {
+  login: async (req, res) => {
+    try {
+      const result = await models.getPassByEmail(req.body.email);
+      if (result.rowCount === 0) {
+        return response(res, 401, "Email not found!");
+      }
 
-    const password = req.body.password;
-    const hashPass = rows[0].password;
-    const check = await bcrypt.compare(password, hashPass);
+      const { role, id } = result.rows[0];
+      const password = result.rows[0].password;
+      const passwordUser = req.body.password;
+      const check = await bcrypt.compare(passwordUser, password);
 
-    if (check) {
-      const role = rows[0].role;
-      const user_id = rows[0].user_id;
-      const tokenJwt = genToken(role, user_id);
-      return response(res, 200, { token: tokenJwt });
-    } else {
-      return response(res, 401, "Wrong password!");
+      if (check) {
+        const tokenJwt = genToken(role, id);
+        return response(res, 200, {
+          message: "Login succesful!",
+          token: tokenJwt,
+          profile: result.rows[0],
+        });
+      } else {
+        return response(res, 401, "Incorrect password!");
+      }
+    } catch (error) {
+      response(res, 500, error.message);
     }
-  } catch (err) {
-    return response(res, 500, err.message);
-  }
+  },
 };
 
-module.exports = controllers;
+module.exports = controller;

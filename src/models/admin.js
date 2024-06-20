@@ -1,12 +1,12 @@
 const models = {};
 const db = require("../configs/db");
 
-//Get all the movies
-models.getData = async (page) => {
+// Get All Movies
+models.getAllMovies = async (page) => {
   try {
     const offset = (page - 1) * 5;
     const { rows } = await db.query(
-      `SELECT * FROM movies ORDER BY movie_id DESC LIMIT 5 OFFSET $1`,
+      `SELECT * FROM movies ORDER BY id DESC LIMIT 5 OFFSET $1`,
       [offset]
     );
     let {
@@ -26,25 +26,12 @@ models.getData = async (page) => {
   }
 };
 
-// Get a movie
-models.getMovie = async (id) => {
-  try {
-    const { rows } = await db.query(
-      `SELECT * FROM movies WHERE movie_id = $1`,
-      [id]
-    );
-    return { rows };
-  } catch (err) {
-    throw err;
-  }
-};
-
-//Sort the movies
-models.sortData = async (date, page) => {
+// Sort Movies
+models.sortMovies = async (date, page) => {
   try {
     const offset = (page - 1) * 5;
     const { rows } = await db.query(
-      `SELECT * FROM movies WHERE release_date < $1 LIMIT 5 OFFSET $2`,
+      `SELECT * FROM movies WHERE release_date <= $1 LIMIT 5 OFFSET $2`,
       [date, offset]
     );
     let {
@@ -66,8 +53,18 @@ models.sortData = async (date, page) => {
   }
 };
 
-// Add the movie
-models.addData = async ({
+// Get Movie
+models.getMovie = async (id) => {
+  try {
+    const { rows } = await db.query(`SELECT * FROM movies WHERE id = $1`, [id]);
+    return { rows };
+  } catch (err) {
+    throw err;
+  }
+};
+
+// Add Movie
+models.addMovie = ({
   image,
   movie_name,
   category,
@@ -107,12 +104,12 @@ models.addData = async ({
   let urlFriendlyString = sanitizedString.split(" ").join("-");
 
   // Add file extension
-  let detail = `/${urlFriendlyString}`;
+  let detail = `${urlFriendlyString}`;
 
-  return await db.query(
+  return db.query(
     `INSERT INTO movies (image, movie_name, category, release_date, hours, minutes, director, casts, synopsis, location, date, time, recommended, detail) 
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
-     RETURNING movie_id`,
+     RETURNING id`,
     [
       image,
       movie_name,
@@ -132,7 +129,7 @@ models.addData = async ({
   );
 };
 
-//Update a movie
+// Update Movie
 models.updateMovie = async (
   {
     image,
@@ -176,14 +173,14 @@ models.updateMovie = async (
   let urlFriendlyString = sanitizedString.split(" ").join("-");
 
   // Add file extension
-  let detail = `/${urlFriendlyString}.html`;
+  let detail = `${urlFriendlyString}`;
 
   return await db.query(
     `UPDATE movies
      SET image = $1, movie_name = $2, category = $3, director = $4, casts = $5, 
      release_date = $6, hours = $7, minutes = $8, synopsis = $9, location = $10, date = $11, time = $12,  recommended = $13, detail = $14, updated_at = NOW() 
-     WHERE movie_id = $15
-     RETURNING movie_id`,
+     WHERE id = $15
+     RETURNING id`,
     [
       image,
       movie_name,
@@ -204,11 +201,11 @@ models.updateMovie = async (
   );
 };
 
-//Delete a movie
+// Delete Movie
 models.deleteMovie = async (id) => {
   return await db.query(
-    `DELETE FROM movies WHERE movie_id = $1
-     RETURNING movie_id`,
+    `DELETE FROM movies WHERE id = $1
+     RETURNING id`,
     [id]
   );
 };

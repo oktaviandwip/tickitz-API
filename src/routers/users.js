@@ -1,13 +1,11 @@
 const express = require("express");
 const routers = express.Router();
 const controllers = require("../controllers/users");
+const authCheck = require("../middleware/auth");
 const upload = require("../middleware/upload");
 
-routers.get("/", controllers.get);
-routers.get("/:id", controllers.getUser);
 routers.post("/", controllers.add);
-routers.post("/sign-up", controllers.add);
-routers.put("/:id", upload.single("image"), controllers.update);
-routers.delete("/:id", controllers.delete);
+routers.get("/", authCheck(), controllers.get);
+routers.put("/", authCheck(), upload.single("image"), controllers.update);
 
 module.exports = routers;
