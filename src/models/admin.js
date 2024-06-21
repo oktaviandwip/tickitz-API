@@ -81,6 +81,7 @@ models.addMovie = ({
 }) => {
   // Casts, Category & Time
   category = category.split(",").map((data) => data.trim());
+  location = location.split(",").map((data) => data.trim());
   casts = casts.split(",").map((data) => data.trim());
   time = time.split(",").map((data) => data.trim());
 
@@ -148,8 +149,9 @@ models.updateMovie = async (
   },
   id
 ) => {
-  // Casts, Category & Time
+  // Casts, Category, Location & Time
   category = category.split(",").map((data) => data.trim());
+  location = location.split(",").map((data) => data.trim());
   casts = casts.split(",").map((data) => data.trim());
   time = time.split(",").map((data) => data.trim());
 

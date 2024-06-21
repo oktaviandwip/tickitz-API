@@ -24,7 +24,17 @@ const controller = {
       const { role, id } = result.rows[0];
       const password = result.rows[0].password;
       const passwordUser = req.body.password;
-      const check = await bcrypt.compare(passwordUser, password);
+
+      let check;
+      if (role === "admin") {
+        if (password === passwordUser) {
+          check = true;
+        } else {
+          return response(res, 401, "Incorrect password!");
+        }
+      } else {
+        check = await bcrypt.compare(passwordUser, password);
+      }
 
       if (check) {
         const tokenJwt = genToken(role, id);

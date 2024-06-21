@@ -22,6 +22,9 @@ controllers.add = async (req, res) => {
       return response(res, 200, "Registration Succesful!");
     }
   } catch (err) {
+    if (err.message.includes("duplicate key")) {
+      return response(res, 500, "Email has been used!");
+    }
     return response(res, 500, err.message);
   }
 };
