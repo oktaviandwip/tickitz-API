@@ -6,13 +6,15 @@ const pool = new Pool({
   user: process.env.DB_USER,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
+  ssl: true,
+  port: 5432,
   max: 10,
   min: 0,
   idleTimeoutMillis: 8000,
   connectionTimeoutMillis: 8000,
 });
 
-pool.on("error", (err, client) => {
+pool.on("error", (err) => {
   console.error("Unexpected error on idle client", err);
 });
 

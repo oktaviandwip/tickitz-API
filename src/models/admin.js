@@ -79,7 +79,7 @@ models.addMovie = ({
   time,
   recommended,
 }) => {
-  // Casts, Category & Time
+  // Category, Location, Casts, & Time
   category = category.split(",").map((data) => data.trim());
   location = location.split(",").map((data) => data.trim());
   casts = casts.split(",").map((data) => data.trim());
