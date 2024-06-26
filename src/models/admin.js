@@ -31,7 +31,7 @@ models.sortMovies = async (date, page) => {
   try {
     const offset = (page - 1) * 5;
     const { rows } = await db.query(
-      `SELECT * FROM movies WHERE release_date <= $1 LIMIT 5 OFFSET $2`,
+      `SELECT * FROM movies WHERE release_date <= $1 ORDER BY release_date DESC  LIMIT 5 OFFSET $2`,
       [date, offset]
     );
     let {
