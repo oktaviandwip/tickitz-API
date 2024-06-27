@@ -62,7 +62,6 @@ const controller = {
   login: async (req, res) => {
     try {
       const result = await models.getPassByEmail(req.body.email);
-      console.log(result);
       if (result.rowCount === 0) {
         return response(res, 401, "Email not found!");
       }
