@@ -2,6 +2,7 @@ services:
     backend-express:
         container_name: putra_tickitz
         image: oktaviandwip/tickitz:2
+        restart: unless-stopped
         ports:
             - '8000:8000'
         environment:
