@@ -13,20 +13,20 @@
 
 ## 🛠️ Installation Steps
 
-1. Clone the repository
+<p><b>1. Clone the repository</b></p>
 
 ```bash
 git clone https://github.com/oktaviandwip/tickitz-backend
 ```
 
-2. Install dependencies
+<p><b>2. Install dependencies</b></p>
 
 ```bash
 npm install
 # or
 yarn install
 ```
-3. Run the app
+<p><b>3. Run the app</b></p>
 
 ```bash
 npm start
@@ -36,23 +36,26 @@ npm start
 
 ## 📥 Contributing
 
-1. Fork the project
+<p><b>1. Fork the project</b></p>
    
-2. Create your feature branch
+<p><b>2. Create your feature branch</b></p>
 
 ```bash
 git checkout -b feature/new-feature
 ```
-3. Commit your changes
+<p><b>3. Commit your changes</b></p>
+
 ```bash
 git commit -m 'Add new feature'
 ```
-4. Push to the branch
+
+<p><b>4. Push to the branch</b></p>
+
 ```bash
 git push origin feature/new-feature
 ```
 
-5. Open a pull request
+<p><b>5. Open a pull request</b></p>
 
 ## 💻 Built with
     
