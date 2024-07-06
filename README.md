@@ -16,7 +16,7 @@
 1. Clone the repository
 
 ```bash
-git clone https://github.com/oktaviandwip/weekly-tasks-fazztrack.git
+git clone https://github.com/oktaviandwip/tickitz-backend
 ```
 
 2. Install dependencies
@@ -26,7 +26,6 @@ npm install
 # or
 yarn install
 ```
-
 3. Run the app
 
 ```bash
@@ -34,6 +33,29 @@ npm start
 ```
 
 🌟 You are all set!
+
+## 🤝 Contributing
+
+1. Fork the project
+   
+2. Create your feature branch
+
+```bash
+git checkout -b feature/new-feature
+```
+3. Commit your changes
+
+```bash
+git commit -m 'Add new feature'
+```
+
+4. Push to the branch
+
+```bash
+git push origin feature/new-feature
+```
+
+5. Open a pull request
 
 ## 💻 Built with
     
