@@ -36,7 +36,7 @@ controllers.add = async (req, res) => {
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  `${process.env.BASE_URL}/users/google/callback`
+  `${process.env.CALLBACK_URL}/users/google/callback`
 );
 
 const scopes = [
@@ -76,7 +76,7 @@ controllers.googleCallbackSignup = async (req, res) => {
 
     // Send Data from Google to Signup in FE
     const queryParams = new URLSearchParams(data).toString();
-    const redirectUrl = `http://localhost:5173/users/google/callback?${queryParams}`;
+    const redirectUrl = `${process.env.REDIRECT_URL}/users/google/callback?${queryParams}`;
     res.redirect(redirectUrl);
   } catch (error) {
     return response(res, 500, error.message);

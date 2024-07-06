@@ -62,7 +62,7 @@ const sendPinToEmail = (email, pin) => {
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  `${process.env.BASE_URL}/auth/google/callback`
+  `${process.env.CALLBACK_URL}/auth/google/callback`
 );
 
 const scopes = [
@@ -159,7 +159,7 @@ const controller = {
 
       // Send Data from Google to Login in FE
       const queryParams = new URLSearchParams(data).toString();
-      const redirectUrl = `http://localhost:5173/auth/google/callback?${queryParams}`;
+      const redirectUrl = `${process.env.REDIRECT_URL}/auth/google/callback?${queryParams}`;
       res.redirect(redirectUrl);
     } catch (error) {
       return response(res, 500, error.message);
