@@ -20,4 +20,5 @@ routers.put(
 );
 
 routers.delete("/movies/:id", authCheck("admin"), controllers.delete);
+
 module.exports = routers;

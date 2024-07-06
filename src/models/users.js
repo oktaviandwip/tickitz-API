@@ -12,11 +12,11 @@ models.getUser = (id) => {
 };
 
 // Add User
-models.addUser = ({ email, password }) => {
+models.addUser = ({ email, password, picture }) => {
   return db.query(
-    `INSERT INTO users (email, password) 
-     VALUES ($1, $2)`,
-    [email, password]
+    `INSERT INTO users (email, password, photo_profile) 
+     VALUES ($1, $2, $3)`,
+    [email, password, picture]
   );
 };
 

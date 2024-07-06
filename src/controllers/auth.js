@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const hashing = require("../utils/hash");
 const response = require("../utils/response");
+const { google } = require("googleapis");
 
 // Generate Token for Login
 const genToken = (role, id) => {
@@ -57,6 +58,24 @@ const sendPinToEmail = (email, pin) => {
   });
 };
 
+// Create Redirect URL to Google Login
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  `${process.env.BASE_URL}/auth/google/callback`
+);
+
+const scopes = [
+  "https://www.googleapis.com/auth/userinfo.email",
+  "https://www.googleapis.com/auth/userinfo.profile",
+];
+
+const authorizationUrl = oauth2Client.generateAuthUrl({
+  access_type: "offline",
+  scope: scopes,
+  include_granted_scopes: true,
+});
+
 const controller = {
   // Login
   login: async (req, res) => {
@@ -69,6 +88,23 @@ const controller = {
       const { role, id } = result.rows[0];
       const password = result.rows[0].password;
       const passwordUser = req.body.password;
+
+      if (!password && !passwordUser) {
+        const tokenJwt = genToken(role, id);
+        return response(res, 200, {
+          message: "Login succesful!",
+          token: tokenJwt,
+          profile: result.rows[0],
+        });
+      }
+
+      if (!password) {
+        return response(res, 401, "Please use GOOGLE to login!");
+      }
+
+      if (!passwordUser) {
+        return response(res, 401, "Please use FORM to login!");
+      }
 
       let check;
       if (role === "admin") {
@@ -91,6 +127,40 @@ const controller = {
       } else {
         return response(res, 401, "Incorrect password!");
       }
+    } catch (error) {
+      return response(res, 500, error.message);
+    }
+  },
+
+  // Google Login
+  googleLogin: async (req, res) => {
+    return response(res, 200, authorizationUrl);
+  },
+
+  // Google Callback Login
+  googleCallbackLogin: async (req, res) => {
+    try {
+      const { code } = req.query;
+
+      const { tokens } = await oauth2Client.getToken(code);
+
+      oauth2Client.setCredentials(tokens);
+
+      const oauth2 = google.oauth2({
+        auth: oauth2Client,
+        version: "v2",
+      });
+
+      const { data } = await oauth2.userinfo.get();
+
+      if (!data.email || !data.name) {
+        return response(res, 500, { data });
+      }
+
+      // Send Data from Google to Login in FE
+      const queryParams = new URLSearchParams(data).toString();
+      const redirectUrl = `http://localhost:5173/auth/google/callback?${queryParams}`;
+      res.redirect(redirectUrl);
     } catch (error) {
       return response(res, 500, error.message);
     }

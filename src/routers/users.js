@@ -5,6 +5,8 @@ const authCheck = require("../middleware/auth");
 const upload = require("../middleware/upload");
 
 routers.post("/", controllers.add);
+routers.get("/google", controllers.googleSignup);
+routers.get("/google/callback", controllers.googleCallbackSignup);
 routers.get("/", authCheck(), controllers.get);
 routers.put("/", authCheck(), upload.single("image"), controllers.update);
 
